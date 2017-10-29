@@ -1,3 +1,4 @@
+var fs = require("fs");
 var request = require("request");
 var omdbMod = {
   omdb: function () {
@@ -17,8 +18,7 @@ var omdbMod = {
     request(movieURL, function (error, response, body) {
       if (error) {
         console.log("Error occurred: " + error);
-      }
-      else if (!error && response.statusCode === 200) {
+      } else if (!error && response.statusCode === 200) {
         console.log("Movie title: " + JSON.parse(body).Title +
           "\nRelease date: " + JSON.parse(body).Released +
           "\nIMDB rating: " + JSON.parse(body).imdbRating +
@@ -27,6 +27,22 @@ var omdbMod = {
           "\nLanguage: " + JSON.parse(body).Language +
           "\nPlot: " + JSON.parse(body).Plot +
           "\nActors: " + JSON.parse(body).Actors);
+
+
+        var logTxt = "\n Movie title: " + JSON.parse(body).Title +
+          "\nRelease date: " + JSON.parse(body).Released +
+          "\nIMDB rating: " + JSON.parse(body).imdbRating +
+          "\nRotten Tomatoes rating: " + JSON.parse(body).Ratings[1].Value +
+          "\nCountry where movie was produced: " + JSON.parse(body).Country +
+          "\nLanguage: " + JSON.parse(body).Language +
+          "\nPlot: " + JSON.parse(body).Plot +
+          "\nActors: " + JSON.parse(body).Actors;
+
+        fs.appendFile("log.txt", logTxt, function (error) {
+          if (error) {
+            console.log(error);
+          }
+        });
       }
     });
   }
